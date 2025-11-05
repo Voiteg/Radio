@@ -1,8 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import Login from "./components/Login.jsx";
 
-function App() {
-    return <h1>Hello from React + Laravel!</h1>;
-}
-
-ReactDOM.createRoot(document.getElementById('app')).render(<App />);
+ReactDOM.createRoot(document.getElementById("app")).render(
+    <React.StrictMode>
+        <Login />
+    </React.StrictMode>
+);
