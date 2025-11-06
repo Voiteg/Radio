@@ -10,19 +10,21 @@ use Illuminate\Support\Facades\Hash;
 class Logowaniecontroller extends Controller
 {
     public function Logowanie(Request $request){
-       $request->validate([
-        "email" => 'required|string',
-        "haslo" => 'required|string'
-     ]); $dane = Dane::where('email', $request->email)->first();
-        if($dane && Hash::check($request->haslo, $dane->haslo)){
-            Auth::login($dane);
-            return redirect('/glowna');
+    if($_POST){
+        $conn = mysqli_connect('127.0.0.1', 'root', '', 'dane');
+        $email = $_POST['email'] ?? ''; 
+        $haslo = $_POST['haslo'] ?? '';
+        $spr = $conn->prepare("SELECT email, haslo FROM dane WHERE email = ? AND haslo = ?");
+        $spr->bind_param('ss', $email, $haslo);
+        $spr->execute();
+        $wynik = $spr->get_result();
+        if($wynik -> num_rows > 0){
+            echo"zalogowano pomyślnie";
+            return redirect('/Radio');
         } else {
-            return redirect('/lobby')->with("Nie udało sie zalogować");
-        } 
+            echo "Nie znaleziono urzytkownika lub popełniłeś błond podczas logowanja";
+            return redirect('/main');
+        }
     }
-    public function wyloguj(){
-        Auth::logout();
-        return redirect('/lobby');
     }
 }
