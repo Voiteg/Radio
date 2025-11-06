@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Roboto:wght@400;500&display=swap');
 
     body {
       margin: 0;
@@ -13,6 +12,9 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+    }
+    #rejestracja-box{
+      width: 500px;
     }
 /*
     .login-box {
