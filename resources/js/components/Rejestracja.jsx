@@ -1,14 +1,41 @@
 import React, { useState } from "react";
+import axios from "axios";
 export default function Rejestracja() {
     const [form, setForm] = useState({imie: "", nazwisko: "", email: "", haslo: "", wiek: "" });
+    const [error, setError] = useState(null);
+
 
     const handleChange = (e) => {
         setForm({... form,[e.target.name]: e.target.value});
     };
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
-        //api
+        setError(null);
+
+        const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = tokenMeta ? tokenMeta.getAttribute('content') : null;
+
+        try{
+            const res = await axios.post('/rej', form, {
+                headers: {
+                    ...(csrf ? {'X-CSRF-TOKEN': csrf} : {}),
+                },
+            });
+
+            if(res.data?.redirect){
+                window.location.href = res.data.redirect;
+            } else {
+                window.location.href = '/main';
+            }
+        } catch (err){
+            console.error(err);
+            if(err.respones?.data?.message){
+                setError(err.response.data.message);
+            } else {
+                setError("Wystąpił błąd podczas rejestracji. Spróbuj ponownie.");
+            }
+        }
     };
 
     return (
@@ -98,6 +125,7 @@ export default function Rejestracja() {
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all">
                         Zajerestuj się
                     </button>
+                    {error && <p className="text-red-600 text-center mt-2">{error}</p>}
                 </form>
 
             </section>

@@ -10,5 +10,5 @@ Route::get('/', function () {
 Route::get('/main', function(){
     return view('test');
 });
-Route::post('/rej', [Rejestracjakontroller::class, 'Rejestracja']);
-Route::post('/log', [Logowaniecontroller::class, 'Logowanie']);
+Route::post('/rej', [Rejestracjakontroller::class, 'Rejestracja'])->name('rej');
+Route::post('/log', [Logowaniecontroller::class, 'Logowanie'])->name('log');

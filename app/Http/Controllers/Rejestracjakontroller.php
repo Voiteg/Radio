@@ -21,6 +21,11 @@ class Rejestracjakontroller extends Controller
         'wiek' => $request->wiek,
         'email' => $request->email,
         'haslo' => $request->haslo
-     ]); return redirect('/main');
+     ]); 
+     
+     if($request->expectsJson()){
+        return response()->json(['success' => true, 'redirect' => url('/main')], 201);
+     }
+     return redirect('/main');
     }
 }
