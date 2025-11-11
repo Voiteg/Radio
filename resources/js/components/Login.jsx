@@ -1,20 +1,45 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function Login() {
-    const [form, setForm] = useState({email: '', password: ''});
+export default function Login({onSwitch}) {
+    const [form, setForm] = useState({email: '', haslo: ''});
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value});
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        //api
+        setError(null);
+
+        const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrf = tokenMeta ? tokenMeta.getAttribute('content') : null;
+
+        try{
+            const res = await axios.post('/log', form, {
+                headers: {
+                    ...(csrf ? {'X-CSRF-TOKEN': csrf} : {}),
+                },
+            });
+
+            if(res.data?.redirect){
+                window.location.href = res.data.redirect;
+            } else {
+                window.location.href = '/main';
+            }
+        } catch (err){
+            console.error(err);
+            if(err.response?.data?.message){
+                setError(err.response.data.message);
+            } else {
+                setError("Wystąpił błąd podczas logowania. Spróbuj ponownie.");
+            }
+        }
     };
 
     return (
         <section>
-            <h1>huj</h1>
            {/*  <section className='bg-white shadow-2xl rounded-2xl p-8 w-full max-w-md'>
                 <h2 className='text-2xl font-bold text-center mb-6 text-gray-800'>Logowanie</h2>
                 <form onSubmit={handleSubmit} className='space-y-5'>
@@ -54,7 +79,7 @@ export default function Login() {
                         <a href="rejestracja" className='text-blue-600 hover:underline'>Zarejestruj się</a>
                         </p>
                 </form>
-            </section>
+            </section>*/}
 
 
             <section className='login-box'>
@@ -75,16 +100,19 @@ export default function Login() {
                     />
                     <input
                     type='password'
-                    id='password'
-                    name='password'
-                    value={form.password}
+                    id='haslo'
+                    name='haslo'
+                    value={form.haslo}
                     onChange={handleChange}
                     placeholder='••••••••'
                     required
                     />
                     <button type='submit'>Zaloguj się</button>
                     <p className=''>Nie masz jeszcze konta?{" "}
-                        <a href="rejestracja" className=''>Zarejestruj się</a>
+                        <button
+                        id='zmiana'
+                        onClick={onSwitch}
+                        >Zarejestruj się</button>
                         </p>
                 </form>
                 
@@ -96,7 +124,7 @@ export default function Login() {
                 <section class="bar"></section>
                 <section class="bar"></section>
                 <section class="bar"></section>
-            </section>*/}
+            </section>
 
 
         </section>
