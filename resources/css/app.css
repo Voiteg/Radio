@@ -13,22 +13,19 @@
       justify-content: center;
       overflow: hidden;
     }
-    #rejestracja-box{
-      width: 500px;
-    }
-/*
+
+
     .login-box {
       background: rgba(20, 20, 20, 0.85);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 40px;
-      width: 320px;
+      width: 550px;
       box-shadow: 0 0 25px rgba(255, 0, 128, 0.3);
       text-align: center;
       position: relative;
       z-index: 2;
-      width: 80%;
     }
 
     .login-box h1 {
@@ -62,7 +59,7 @@
       box-shadow: 0 0 10px #ff0099;
     }
 
-    .login-box button {
+    .login-box button:not(#zmiana) {
       width: 100%;
       padding: 10px;
       background: linear-gradient(90deg, #ff0099, #ff6600);
@@ -76,7 +73,7 @@
       box-shadow: 0 0 15px rgba(255, 0, 128, 0.3);
     }
 
-    .login-box button:hover {
+    .login-box button:hover:not(#zmiana) {
       transform: scale(1.03);
       box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
     }
@@ -115,4 +112,5 @@
       margin-bottom: 10px;
       color: #ff6600;
       text-shadow: 0 0 20px #ff6600;
-    }*/
+    }
+    

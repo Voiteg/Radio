@@ -29,7 +29,19 @@ public function Rejestracja(Request $request){
     ]); 
         $mail = $request->email;
         Mail::to($mail)->send(new Mailpowitalny);
-    return redirect('/main');
+    if($dane && Hash::check($request->haslo, $dane->haslo)){
+            Auth::login($dane);
+        
+        return response()->json([
+            'success' => true,
+            'redirect' => '/main'
+        ]);
+    }else{
+        return response()->json([
+            'success' => false,
+            'message' => 'Nieprawidłowy email lub hasło.'
+        ], 401);
+    }
 }
 
 
